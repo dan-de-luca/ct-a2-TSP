@@ -35,16 +35,38 @@ class City:
         return self.y
 
 
+def get_delimiter(file_path):
+    with open(file_path, "r") as file:
+        # Read the first line
+        first_line = file.readline()
+        
+        # Check for possible delimiters (comma, space, tab, semicolon)
+        delimiters = [",", " ", "\t", ";"]
+        for delimiter in delimiters:
+            if delimiter in first_line: return delimiter
+        
+        # If no delimiter found, raise an error (invalid file format)
+        raise Exception("Common delimiter not found. Invalid file format.")
+
+
 def handle_csv_file(file_path, num_cities):
     """
     Reads the data file (csv) and returns a list of the cities
     :param file_path: path to the data file
     :return: list of cities
+    
+    Data sourced from: https://www.math.uwaterloo.ca/tsp/world/countries.html
     """
     cities = []
+    
+    # Get the delimiter
+    delimiter = get_delimiter(file_path)
+    
+    # Read the CSV file using the correct delimiter
     with open(file_path, "r") as file:
-        reader = csv.reader(file)
+        reader = csv.reader(file, delimiter=delimiter)
         for row in reader:
+            # Only read the first num_cities cities
             if len(cities) < num_cities: cities.append(City(int(row[0]), float(row[1]), float(row[2])))
             else: break
     

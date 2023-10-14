@@ -1,0 +1,3 @@
+Running simulation: 1
+Number of cities: 30
+Algorithms: ['exact', 'approx', 'heuristic']
