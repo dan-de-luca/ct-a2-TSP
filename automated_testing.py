@@ -51,7 +51,9 @@ def run_tsp_simulations(data_file_path, output_file_path, num_cities, tsp_size_i
         
         # If all algorithms have been disabled, exit the program
         if not exact_algorithm and not approx_algorithm and not heuristic_algorithm: break
-        else: num_cities += tsp_size_increment
+        else: 
+            num_cities += tsp_size_increment
+            simulation_num += 1
 
 
 if __name__ == "__main__":
@@ -69,7 +71,7 @@ if __name__ == "__main__":
     # Validate the initial TSP size
     if num_cities.isdigit(): num_cities = int(num_cities)
     else: num_cities = 0 # invalid input to be handled next
-    if num_cities < 30: num_cities = 30 # if input invalid, set to default number of cities
+    if num_cities < 20: num_cities = 20 # if input invalid, set to default number of cities
     
     # Validate the TSP size increment
     if tsp_size_increment.isdigit(): tsp_size_increment = int(tsp_size_increment)

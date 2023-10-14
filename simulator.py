@@ -24,10 +24,10 @@ def run_tsp_simulation(cities, algorithms, output_file_path):
         exact_end_time = time.perf_counter()
         exact_duration_hms = timing_handler.duration_hms(exact_start_time, exact_end_time)
         f = open(output_file_path, "a")
-        f.write("Exact Algorithm: Held-Karp")
-        tour_exact = "Optimal Tour: " +  str(exact_tour)
+        f.write("Exact Algorithm: Held-Karp\n")
+        tour_exact = "Optimal Tour: " +  str(exact_tour) + "\n"
         f.write(tour_exact)
-        dist_exact = "Optimal Distance: " + str(exact_distance) + " km"
+        dist_exact = "Optimal Distance: " + str(exact_distance) + " km" + "\n"
         f.write(dist_exact)
         runtime_exact = "Runtime: " + exact_duration_hms + "\n"
         f.write(runtime_exact)
@@ -42,10 +42,10 @@ def run_tsp_simulation(cities, algorithms, output_file_path):
         approx_end_time = time.perf_counter()
         approx_duration_hms = timing_handler.duration_hms(approx_start_time, approx_end_time)
         f = open(output_file_path, "a")
-        f.write("Approximation Algorithm: Christofides")
-        tour_approx = "Approximate Best Tour: " + str(approx_tour)
+        f.write("Approximation Algorithm: Christofides\n")
+        tour_approx = "Approximate Best Tour: " + str(approx_tour) + "\n"
         f.write(tour_approx)
-        dist_approx = "Approximate Best Distance: " + str(approx_distance) + " km"
+        dist_approx = "Approximate Best Distance: " + str(approx_distance) + " km" + "\n"
         f.write(dist_approx)
         runtime_approx = "Runtime: " + approx_duration_hms + "\n"
         f.write(runtime_approx)
@@ -60,12 +60,12 @@ def run_tsp_simulation(cities, algorithms, output_file_path):
         heuristic_end_time = time.perf_counter()
         heuristic_duration_hms = timing_handler.duration_hms(heuristic_start_time, heuristic_end_time)
         f = open(output_file_path, "a")
-        f.write("Heuristic Algorithm: Lin-Kernighan")
-        tour_heuristic = "Heuristic Best Tour: " + str(heuristic_tour)
+        f.write("Heuristic Algorithm: Lin-Kernighan\n")
+        tour_heuristic = "Heuristic Best Tour: " + str(heuristic_tour) + "\n"
         f.write(tour_heuristic)
-        dist_heuristic = "Heuristic Best Distance: " + str(heuristic_distance) + " km"
+        dist_heuristic = "Heuristic Best Distance: " + str(heuristic_distance) + " km" + "\n"
         f.write(dist_heuristic)
-        runtime_heuristic = "Runtime: " + heuristic_duration_hms + "\n"
+        runtime_heuristic = "Runtime: " + heuristic_duration_hms + "\n\n"
         f.write(runtime_heuristic)
         f.close()
         tsp_runtimes.append(timing_handler.duration_s(heuristic_start_time, heuristic_end_time))
