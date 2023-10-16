@@ -1,5 +1,6 @@
 # import os.path
 # from tqdm import tqdm
+# from timeout_decorator import timeout
 import time
 from helpers import timing_handler
 from algorithms import held_karp_exact_tsp, christofides_approx_tsp, lin_kernighan_heuristic_tsp
@@ -11,7 +12,7 @@ def run_algorithm(algorithm_func, algorithm_name, cities, output_file):
     end_time = time.perf_counter()
     duration_hms = timing_handler.duration_hms(start_time, end_time)
     output_file.write(f"{algorithm_name} Algorithm\n")
-    output_file.write(f"Best Tour: {tour}\n")
+    # output_file.write(f"Best Tour: {tour}\n")
     output_file.write(f"Best Distance: {distance} km\n")
     output_file.write(f"Runtime: {duration_hms}\n\n")
     return timing_handler.duration_s(start_time, end_time)

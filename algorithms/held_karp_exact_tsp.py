@@ -1,4 +1,5 @@
 # import sys
+import time
 import math
 import itertools
 from tqdm import tqdm
@@ -14,7 +15,14 @@ def calculate_distance(coord1, coord2):
     dlat = math.radians(lat2 - lat1)
     dlon = math.radians(lon2 - lon1)
     a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    threshold = 1e-10
+    if -threshold <= a <= threshold:
+        a = 0
+        c = 0
+    else:
+        a = max(0, min(a, 1))
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    
     distance = radius * c
     return distance
 
@@ -177,10 +185,18 @@ def run(cities):
         #         min_distance = tour_distance
         #         optimal_tour = tour[:]
             # pbar.update(1)
-    with tqdm(total=1, desc="Held-Karp TSP") as pbar:
+    # with tqdm(total=1, desc="Held-Karp TSP") as pbar:
+    #     min_distance, optimal_tour = held_karp(distances)
+    #     pbar.update(1)
+    
+    start_time = time.perf_counter()
+    while True:
         min_distance, optimal_tour = held_karp(distances)
-        pbar.update(1)
-
+        elapsed_time = time.perf_counter() - start_time
+        print(f"\rElapsed time: {elapsed_time:.2f} seconds", end="")
+        if elapsed_time > 1800: # 30 minutes
+            break
+    
     optimal_tour.append(0)  # Return to the starting city (0)
     results = [optimal_tour, min_distance]
     return results

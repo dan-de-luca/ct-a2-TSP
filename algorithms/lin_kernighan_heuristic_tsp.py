@@ -13,7 +13,14 @@ def calculate_distance(coord1, coord2):
     dlat = math.radians(lat2 - lat1)
     dlon = math.radians(lon2 - lon1)
     a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    threshold = 1e-10
+    if -threshold <= a <= threshold:
+        a = 0
+        c = 0
+    else:
+        a = max(0, min(a, 1))
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    
     distance = radius * c
     return distance
 

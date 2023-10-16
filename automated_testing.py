@@ -1,12 +1,12 @@
 # import subprocess
-# import time
+import time
 import os.path
 
 from helpers import data_handler
 import simulator
 
 MAX_EXECUTION_TIME = 1800 # 30 minutes in seconds
-DEFAULT_DATA_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "data", "it16862.csv"))
+DEFAULT_DATA_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "data", "world.csv"))
 DEFAULT_OUTPUT_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "results", "test_results.txt"))
 
 
@@ -65,8 +65,15 @@ def run_tsp_simulations(data_file_path, output_file_path, num_cities, tsp_size_i
     data_file_path, output_file_path = setup_file_paths(data_file_path, output_file_path)
     simulation_num = 1
 
-    while True:
-        algorithms = ["exact", "approx", "heuristic"]
+    exact_algorithm = False
+    approx_algorithm = True
+    heuristic_algorithm = False
+    
+    while exact_algorithm or approx_algorithm or heuristic_algorithm:
+        algorithms = []
+        if exact_algorithm: algorithms.append("exact")
+        if approx_algorithm: algorithms.append("approx")
+        if heuristic_algorithm: algorithms.append("heuristic")
 
         # Generate the TSP instance
         cities = generate_tsp_instance(data_file_path, num_cities)
@@ -76,10 +83,21 @@ def run_tsp_simulations(data_file_path, output_file_path, num_cities, tsp_size_i
             arg = f"Running simulation: {simulation_num}\nNumber of cities: {num_cities}\nAlgorithms: {algorithms}\n"
             f.write(arg)
 
-        tsp_runtimes = simulator.run_tsp_simulation(cities, algorithms, output_file_path)
+        if len(algorithms) > 0: tsp_runtimes = simulator.run_tsp_simulation(cities, algorithms, output_file_path)
 
         # Check runtimes are within the maximum execution time
-        exact_runtime, approx_runtime, heuristic_runtime = tsp_runtimes + [float('inf')] * (3 - len(tsp_runtimes))
+        # approx_runtime = tsp_runtimes + [float('inf')] * (1 - len(tsp_runtimes))
+        # approx_runtime, heuristic_runtime = tsp_runtimes + [float('inf')] * (2 - len(tsp_runtimes))
+        approx_runtime, heuristic_runtime, exact_runtime = tsp_runtimes + [float(2000)] * (3 - len(tsp_runtimes))
+        # if len(tsp_runtimes) == 1:
+        #     approx_runtime = tsp_runtimes[0]
+        #     exact_runtime = 2000
+        #     heuristic_runtime = 2000
+        # elif len(tsp_runtimes) == 2:
+            
+        print("Exact runtime:", exact_runtime)
+        print("Approx runtime:", approx_runtime)
+        print("Heuristic runtime:", heuristic_runtime)
 
         exact_algorithm = exact_runtime < MAX_EXECUTION_TIME
         approx_algorithm = approx_runtime < MAX_EXECUTION_TIME
@@ -91,6 +109,8 @@ def run_tsp_simulations(data_file_path, output_file_path, num_cities, tsp_size_i
         else:
             num_cities += tsp_size_increment
             simulation_num += 1
+        
+        time.sleep(5) # Wait 5 seconds before running the next simulation to allow the CPU to cool down
 
 
 def main():

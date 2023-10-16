@@ -1,6 +1,17 @@
-import networkx as nx
+import time
 import math
-from tqdm import tqdm
+import threading
+# import networkx as nx
+# from tqdm import tqdm
+
+#######################################################################################################################################################
+
+def timer():
+    start_time = time.time()
+    while True:
+        elapsed_time = time.time() - start_time
+        print(f'\rElapsed Time: {elapsed_time:.2f} seconds', end='')
+        time.sleep(1)
 
 #######################################################################################################################################################
 
@@ -198,7 +209,7 @@ def tsp(data):
     # print("Result path: ", path)
     # print("Result length of the path: ", length)
 
-    return length, path
+    return path, length
 
 
 
@@ -214,7 +225,14 @@ def calculate_distance(coord1, coord2):
     dlat = math.radians(lat2 - lat1)
     dlon = math.radians(lon2 - lon1)
     a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    threshold = 1e-10
+    if -threshold <= a <= threshold:
+        a = 0
+        c = 0
+    else:
+        a = max(0, min(a, 1))
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    
     distance = radius * c
     return distance
 
@@ -247,10 +265,35 @@ def run(cities):
     print("Running approximation algorithm TSP: Christofides")
     print("Number of cities:", num_cities)
     
-    with tqdm(total=1, desc="Christofides TSP") as pbar:
-        results = tsp(distances)
-        pbar.update(1)
+    # with tqdm(total=1, desc="Christofides TSP") as pbar:
+    #     results = tsp(distances)
+    #     pbar.update(1)
     
+    # Start the timer in a separate thread
+    timer_thread = threading.Thread(target=timer)
+    timer_thread.daemon = True  # Set the thread as a daemon to exit with the main program
+    timer_thread.start()
+    
+    # start_time = time.perf_counter() # TODO: Remove this line
+    try:
+        # while True:
+        results = tsp(distances)
+            # elapsed_time = time.perf_counter() - start_time # TODO: Remove this line
+            # print(f"\rElapsed time: {elapsed_time:.2f} seconds", end="") # TODO: Remove this line
+            # if elapsed_time > 2800: # 2800 seconds = 46 minutes 40 seconds # TODO: Remove this line
+            #     print("\nMax runtime limit reached. Exiting simulation.") # TODO: Remove this line
+            #     break # TODO: Remove this line
+            
+            # # Check for user input to exit the simulation
+            # user_input = input("\nPress 'q' and Enter to exit the simulation: ")
+            # if user_input.lower() == "q":
+            #     print("Exiting simulation as per user request.")
+            #     break
+    except KeyboardInterrupt:
+        print("\nSimulation interrupted by user.")
+    
+    return results
+
     # with tqdm(total=9, desc="Christofides TSP") as pbar:
     #     # Step 0: Create a complete graph with the cities as nodes
     #     graph = nx.Graph()
@@ -302,7 +345,7 @@ def run(cities):
     
     
     
-    return results
+    # return results
 
 
 # def run(cities):
