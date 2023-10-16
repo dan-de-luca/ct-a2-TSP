@@ -65,15 +65,15 @@ def run_tsp_simulations(data_file_path, output_file_path, num_cities, tsp_size_i
     data_file_path, output_file_path = setup_file_paths(data_file_path, output_file_path)
     simulation_num = 1
 
-    exact_algorithm = False
+    exact_algorithm = True
     approx_algorithm = True
-    heuristic_algorithm = False
+    heuristic_algorithm = True
     
     while exact_algorithm or approx_algorithm or heuristic_algorithm:
         algorithms = []
-        if exact_algorithm: algorithms.append("exact")
         if approx_algorithm: algorithms.append("approx")
         if heuristic_algorithm: algorithms.append("heuristic")
+        if exact_algorithm: algorithms.append("exact")
 
         # Generate the TSP instance
         cities = generate_tsp_instance(data_file_path, num_cities)
@@ -130,7 +130,7 @@ def main():
     # if num_cities < 20: num_cities = 20 # if input invalid, set to default number of cities
     
     # Validate the TSP size increment
-    if tsp_size_increment < 5: tsp_size_increment = 5 # if input invalid, set to default increment size
+    if tsp_size_increment < 1: tsp_size_increment = 1 # if input invalid, set to default increment size
     
     # Validate the file paths
     data_file_path, output_file_path = setup_file_paths(data_file_path, output_file_path)

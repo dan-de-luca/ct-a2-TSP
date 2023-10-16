@@ -52,7 +52,7 @@ def run(cities):
     best_distance = calculate_total_distance(best_tour, distances)
     improvement = True
     
-    print("Running heuristic algorithm TSP: Lin-Kernighan")
+    print("\nRunning heuristic algorithm TSP: Lin-Kernighan")
     print("Number of cities:", num_cities)
     
     while improvement:

@@ -68,10 +68,10 @@ if __name__ == "__main__":
     
     # Check if the file exists, using the default file if input was empty or the file does not exist
     if not os.path.exists(data_file_path):
-        print("File does not exist, using default file instead: wi29.csv")
+        print("File does not exist, using default file instead: world.csv")
         
         # Get the path to the default data file
-        data_file_path = os.path.join(os.path.dirname(__file__), "data", "wi29.csv")
+        data_file_path = os.path.join(os.path.dirname(__file__), "data", "world.csv")
         # print(data_file_path)
     
     # Set up the algorithms to run

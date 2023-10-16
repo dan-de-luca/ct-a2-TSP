@@ -1,8 +1,21 @@
 # import sys
 import time
 import math
+import threading
 import itertools
 from tqdm import tqdm
+
+
+#######################################################################################################################################################
+
+def timer():
+    start_time = time.time()
+    while True:
+        elapsed_time = time.time() - start_time
+        print(f'\rElapsed Time: {elapsed_time:.2f} seconds', end='')
+        time.sleep(1)
+
+#######################################################################################################################################################
 
 
 def calculate_distance(coord1, coord2):
@@ -166,37 +179,26 @@ def held_karp(dists):
     # Add implicit start state
     path.append(0)
 
-    return opt, list(reversed(path))
+    return list(reversed(path)), opt
 
 
 def run(cities):
     num_cities = len(cities)
     distances = generate_distance_matrix(cities)
-    optimal_tour = None
-    min_distance = float('inf')
 
-    print("Running exact algorithm TSP: Held-Karp")
+    # Run Held-Karp (exact) TSP
+    print("\nRunning exact algorithm TSP: Held-Karp")
     print("Number of cities:", num_cities)
-    # with tqdm(total=num_cities, desc="Held-Karp TSP") as pbar:
-        # for perm in itertools.permutations(range(1, num_cities)):  # Start from 1, not 0 (starting city)
-        #     tour = [0] + list(perm)  # Add starting city to the tour
-        #     tour_distance = calculate_tour_distance(tour, distances)
-        #     if tour_distance < min_distance:
-        #         min_distance = tour_distance
-        #         optimal_tour = tour[:]
-            # pbar.update(1)
-    # with tqdm(total=1, desc="Held-Karp TSP") as pbar:
-    #     min_distance, optimal_tour = held_karp(distances)
-    #     pbar.update(1)
     
-    start_time = time.perf_counter()
-    while True:
-        min_distance, optimal_tour = held_karp(distances)
-        elapsed_time = time.perf_counter() - start_time
-        print(f"\rElapsed time: {elapsed_time:.2f} seconds", end="")
-        if elapsed_time > 1800: # 30 minutes
-            break
+    # Start the timer in a separate thread
+    timer_thread = threading.Thread(target=timer)
+    timer_thread.daemon = True  # Set the thread as a daemon to exit with the main program
+    timer_thread.start()
     
-    optimal_tour.append(0)  # Return to the starting city (0)
-    results = [optimal_tour, min_distance]
+    try:
+        results = held_karp(distances)
+        
+    except KeyboardInterrupt:
+        print("\n\nKeyboard interrupt detected. Exiting...")
+    
     return results

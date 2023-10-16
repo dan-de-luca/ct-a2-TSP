@@ -1242,9 +1242,6 @@ approx Algorithm
 Best Distance: 114057.67305773917 km
 Runtime: 00:08:21.485
 
-Running simulation: 2
-Number of cities: 11000
-Algorithms: ['approx']
 Running simulation: 1
 Number of cities: 11000
 Algorithms: ['approx']
@@ -1255,3 +1252,37 @@ Runtime: 00:07:50.2
 Running simulation: 2
 Number of cities: 12000
 Algorithms: ['approx']
+approx Algorithm
+Best Distance: 127818.0540858001 km
+Runtime: 00:10:03.442
+
+Running simulation: 3
+Number of cities: 13000
+Algorithms: ['approx']
+approx Algorithm
+Best Distance: 138743.1939679817 km
+Runtime: 00:12:37.702
+
+Running simulation: 4
+Number of cities: 14000
+Algorithms: ['approx']
+approx Algorithm
+Best Distance: 135802.4886755571 km
+Runtime: 00:17:51.123
+
+Running simulation: 5
+Number of cities: 15000
+Algorithms: ['approx']
+approx Algorithm
+Best Distance: 150565.3142409499 km
+Runtime: 00:32:14.609
+
+Running simulation: 1
+Number of cities: 27
+Algorithms: ['exact']
+
+#############################################################################
+
+Running simulation: 1
+Number of cities: 25
+Algorithms: ['approx', 'heuristic', 'exact']
